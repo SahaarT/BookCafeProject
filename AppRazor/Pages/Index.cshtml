@@ -1,0 +1,28 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Display Order</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var obj in Model.categories)
+            {
+                <tr>
+                    <td>@obj.Name</td>
+                    <td>@obj.DisplayOrder</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a class="btn btn-primary" asp-page="/Create"></a>
+</div>

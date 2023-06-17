@@ -1,0 +1,17 @@
+﻿@page
+@model AppRazor.Pages.CreateModel
+@{
+}
+
+<form method="post">
+    <label asp-for="@Model.Category.Name"></label>
+    <input asp-for="@Model.Category.Name" />
+
+    <label asp-for="@Model.Category.DisplayOrder"></label>
+    <input asp-for="@Model.Category.DisplayOrder" />
+
+    <label asp-for="@Model.Category.CreatedDateTime"></label>
+    <input asp-for="@Model.Category.CreatedDateTime" />
+
+    <button type="submit"></button>
+</form>

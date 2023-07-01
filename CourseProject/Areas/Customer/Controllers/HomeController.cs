@@ -1,9 +1,10 @@
-﻿using CourseProject.Models;
+﻿using BulkyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace CourseProject.Controllers
+namespace CourseProject.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

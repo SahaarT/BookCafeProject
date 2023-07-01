@@ -1,21 +1,24 @@
-﻿using CourseProject.Data;
-using CourseProject.Models;
+﻿using BulkyBook.DataAccess;
+using BulkyBook.DataAccess.Repository;
+using BulkyBook.DataAccess.Repository.IRepository;
+using BulkyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourseProject.Controllers
+namespace CourseProject.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Category> categories = _db.Categories.ToList();
+            IEnumerable<Category> categories = _unitOfWork.Category.GetAll();
             return View(categories);
         }
 
@@ -34,8 +37,8 @@ namespace CourseProject.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+                _unitOfWork.Category.Add(category);
+                _unitOfWork.Save();
                 TempData["Success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
             }
@@ -51,7 +54,7 @@ namespace CourseProject.Controllers
             }
             else
             {
-                Category category = _db.Categories.Find(Id);
+                Category category = _unitOfWork.Category.GetFirstOrDefault(a => a.Id == Id);
                 if (category == null)
                 {
                     return NotFound();
@@ -60,12 +63,12 @@ namespace CourseProject.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category category)
+        public IActionResult EditPost(Category category)
         {
-            _db.Categories.Update(category);
-            _db.SaveChanges();
+            _unitOfWork.Category.Update(category);
+            _unitOfWork.Save();
             TempData["Success"] = "Category Updated Successfully";
             return RedirectToAction("Index");
         }
@@ -77,7 +80,7 @@ namespace CourseProject.Controllers
             {
                 return View();
             }
-            Category category = _db.Categories.Find(id);
+            Category category = _unitOfWork.Category.GetFirstOrDefault(a => a.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -88,12 +91,12 @@ namespace CourseProject.Controllers
             }
         }
 
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(Category category)
-        {            
-            _db.Categories.Remove(category);
-            _db.SaveChanges();
+        {
+            _unitOfWork.Category.Remove(category);
+            _unitOfWork.Save();
             TempData["Success"] = "Category Deleted Successfully";
             return RedirectToAction("Index");
         }

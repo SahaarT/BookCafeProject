@@ -1,10 +1,13 @@
 ﻿using BulkyBook.DataAccess.Repository;
 using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models.Models;
+using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CourseProject.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ProductController : Controller
     {
         private IUnitOfWork _unitOfWork;
@@ -18,31 +21,6 @@ namespace CourseProject.Areas.Admin.Controllers
             return View(products);
         }
 
-        //Get
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost, ActionName("Create")]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreatePost(Product product)
-        {
-
-            if (product.Name == "")
-            {
-                ModelState.AddModelError("Name Field", "Name field cannot be empty for the product");
-                return View();
-            }
-            else
-            {
-                _unitOfWork.Product.Add(product);
-                _unitOfWork.Save();
-                TempData["Success"] = "Product created successfully";
-            }
-
-            return RedirectToAction("Index");
-        }
 
         //Get
         public IActionResult Delete(Product product)
@@ -69,42 +47,60 @@ namespace CourseProject.Areas.Admin.Controllers
         }
 
         //Get
-        public IActionResult Edit(Product obj)
+        public IActionResult Upsert(int? id)
         {
-            if (obj.Id == null || obj.Id == 0)
+            ProductVM productVM = new ProductVM()
             {
-                return NotFound();
-            }
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Id.ToString()
+                }),
+                CoverTypeList = _unitOfWork.CoverType.GetAll().Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Id.ToString()
+                })
+            };            
 
-            Product product = _unitOfWork.Product.GetFirstOrDefault(a => a.Id == obj.Id);
-            if (product == null) { return NotFound(); }
-            else
+            if (id == null || id == 0)
             {
-                return View(obj);
-            }
-        }
+                //create Product
+                //ViewData["CoverTypes"] = CoverTypes;
+                //ViewBag.Categories = Categories;
 
-        [HttpPost, ActionName("Edit")]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditPost(Product obj)
-        {
-            if (obj.Id == null || obj.Id == 0)
-            {
-                return NotFound();
-            }
-
-            Product product = _unitOfWork.Product.GetFirstOrDefault(a => a.Id == obj.Id);
-            if (product == null)
-            {
-                return NotFound();
+                return View(productVM);
             }
             else
             {
-                _unitOfWork.Product.Update(obj);
-                _unitOfWork.Save();
-                TempData["Success"] = "Modified Product Successfully";
+                //update product                               
+                return View(productVM);
             }
-            return RedirectToAction("Index");
         }
+
+
+        //[HttpPost, ActionName("Edit")]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult UpsertPost(Product obj)
+        //{
+        //    if (obj.Id == null || obj.Id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    Product product = _unitOfWork.Product.GetFirstOrDefault(a => a.Id == obj.Id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    else
+        //    {
+        //        _unitOfWork.Product.Update(obj);
+        //        _unitOfWork.Save();
+        //        TempData["Success"] = "Modified Product Successfully";
+        //    }
+        //    return RedirectToAction("Index");
+        //}
     }
 }

@@ -1,58 +1,32 @@
-﻿@model IEnumerable<Category>
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
 
 <style>
     /*h1{
-        margin-top:20px;
-    }*/
+            margin-top:20px;
+        }*/
 </style>
-@*<h1>Category Index</h1>*@
-<div class="container p-3">
+@*<h1>Product Index</h1>*@
+
+<div class="container p-5">
     <div class="row pt-4">
         <div class="col-6 text-primary">
-            <h2 class="mt-2">Category List</h2>
+            <h2 class="mt-2">Product List</h2>
         </div>
         <div class="col-6 text-end">
-            <a class="btn btn-secondary my-2 my-sm-0" asp-controller="Category" asp-action="Create"><i class="bi bi-plus-square"></i> &ensp; Create Category</a>
+            <a class="btn btn-secondary" asp-controller="Product" asp-action="Upsert"><i class="bi bi-plus-square"></i> &ensp; Create Product</a>
         </div>
     </div>
-
-
-<table class="table table-bordered table-striped" style="width:100%">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="row">Id</th>
-            <th scope="row">Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(Category category in Model)
-        {
-            var tableClass = "";
-            if (category.DisplayOrder % 2 == 0)
-            {
-                tableClass = "table-light";
-            }
-            else
-            {
-                tableClass = "table-active";
-            }            
-            <tr class=@tableClass>
-                <td style="width:40%">@category.Name</td>
-                <td style="width:30%">@category.DisplayOrder</td>
-                <td>
-                    <div class="btn bg-secondary">
-                            <a asp-controller="Category" asp-action="Edit" class="text-light" asp-route-id="@category.Id"> <i class="bi bi-pencil"></i> &ensp; Edit</a>
-                    </div>    
-                    <div class="btn bg-secondary">
-                            <a asp-controller="Category" asp-action="Delete" class="text-light" asp-route-id="@category.Id"><i class="bi bi-trash"></i> &ensp; Delete</a>
-                    </div>
-                </td>
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Price</th>
+                <th>Author</th>
+                <th>Category</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+    </table>
 </div>

@@ -1,0 +1,85 @@
+﻿@model BulkyBook.Models.ViewModels.ProductVM
+
+<form class="pt-4" method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <div class="row">
+        <h2 class="text-primary">Edit Product</h2>
+    </div>
+    <fieldset>
+        <label class="form-label" for="Name" asp-for="Product.Name"></label>
+        <input class="form-control" id="Name" asp-for="Product.Name" placeholder="Enter name of Product...">
+        <span asp-validation-for="Product.Name"></span>
+    </fieldset>
+    <fieldset>
+        <label class="form-label" for="Description" asp-for="Product.Description"></label>
+        <textarea class="form-control" rows="3" id="Description" asp-for="Product.Description" placeholder="Enter description of Product..."></textarea>
+        <span asp-validation-for="Product.Description"></span>
+    </fieldset>
+    <fieldset>
+        <label class="form-label" for="ISBN" asp-for="Product.ISBN"></label>
+        <input class="form-control" id="ISBN" asp-for="Product.ISBN" placeholder="Enter name of Product...">
+        <span asp-validation-for="Product.ISBN"></span>
+    </fieldset>
+    <fieldset>
+        <label class="form-label" for="Author" asp-for="Product.Author"></label>
+        <input class="form-control" id="Author" asp-for="Product.Author" placeholder="Enter name of Product...">
+        <span asp-validation-for="Product.Author"></span>
+    </fieldset>
+    <fieldset>
+        <label class="form-label" for="ListPrice" asp-for="Product.ListPrice"></label>
+        <input class="form-control" id="ListPrice" asp-for="Product.ListPrice" placeholder="Enter name of Product...">
+        <span asp-validation-for="Product.ListPrice"></span>
+    </fieldset>
+    <fieldset>
+        <label class="form-label" for="Price" asp-for="Product.Price"></label>
+        <input class="form-control" id="Price" asp-for="Product.Price" placeholder="Enter name of Product...">
+        <span asp-validation-for="Product.Price"></span>
+    </fieldset>
+    <fieldset>
+        <label class="form-label" for="Price50" asp-for="Product.Price50"></label>
+        <input class="form-control" id="Price50" asp-for="Product.Price50" placeholder="Enter name of Product...">
+        <span asp-validation-for="Product.Price50"></span>
+    </fieldset>
+    <fieldset>
+        <label class="form-label" for="Price100" asp-for="Product.Price100"></label>
+        <input class="form-control" id="Price100" asp-for="Product.Price100" placeholder="Enter name of Product...">
+        <span asp-validation-for="Product.Price100"></span>
+    </fieldset>
+    <fieldset>
+        <label class="form-label" asp-for="Product.ImageUrl" for="ImageUrl"></label>
+        <input id="ImageUrl" asp-for="Product.ImageUrl" class="form-control" type="file"/>
+    </fieldset>
+    @*<fieldset>
+        <label class="form-label" for="CoverTypeId" asp-for="CoverTypeId"></label>
+        <select asp-for="CoverTypeId" asp-items="@(ViewData["CoverTypes"] as IEnumerable<SelectListItem>)" class="form-select">
+            <option disabled selected>--Select CoverType--</option>
+        </select>
+        <span asp-validation-for="CoverTypeId"></span>
+    </fieldset>*@
+    <fieldset>
+        <label class="form-label" for="CoverTypeId" asp-for="Product.CoverTypeId"></label>
+        <select class="form-select" id="CoverTypeId" asp-for="Product.CoverTypeId" asp-items="@Model.CoverTypeList">
+            <option disabled selected>--Select CoverType--</option>
+        </select>
+        <span asp-validation-for="Product.CoverTypeId"></span>
+    </fieldset>
+    @*<fieldset>
+        <label class="form-label" for="CategoryId" asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select">
+            <option disabled selected>--Select Category--</option>
+        </select>
+        <span asp-validation-for="CategoryId"></span>
+    </fieldset>*@
+    <fieldset>
+        <label class="form-label" asp-for="Product.CategoryId" for="CategoryId"></label>
+        <select class="form-select" id="CategoryId" asp-for="Product.CategoryId" asp-items="@Model.CategoryList">
+            <option disabled selected>--Select Category--</option>
+        </select>
+    </fieldset>
+    <div class="mb-5">
+        <button type="submit" class="btn btn-primary mt-4" style="width:150px">Update</button>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary mt-4" style="width:150px">Back To List</a>
+    </div>    
+</form>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

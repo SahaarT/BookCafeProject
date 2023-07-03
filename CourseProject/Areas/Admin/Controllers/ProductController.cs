@@ -11,14 +11,16 @@ namespace CourseProject.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        public IWebHostEnvironment _webHostEnvironmet;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironmet)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironmet = webHostEnvironmet;
         }
         public IActionResult Index()
         {
-            IEnumerable<Product> products = _unitOfWork.Product.GetAll();
-            return View(products);
+            //IEnumerable<Product> products = _unitOfWork.Product.GetAll();
+            return View();
         }
 
 
@@ -62,7 +64,7 @@ namespace CourseProject.Areas.Admin.Controllers
                     Text = a.Name,
                     Value = a.Id.ToString()
                 })
-            };            
+            };
 
             if (id == null || id == 0)
             {
@@ -80,27 +82,38 @@ namespace CourseProject.Areas.Admin.Controllers
         }
 
 
-        //[HttpPost, ActionName("Edit")]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult UpsertPost(Product obj)
-        //{
-        //    if (obj.Id == null || obj.Id == 0)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost, ActionName("Upsert")]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpsertPost(ProductVM productVM, IFormFile? imageFile)
+        {
+            if (ModelState.IsValid)
+            {
+                string wwwRootPath = _webHostEnvironmet.WebRootPath;
+                if (imageFile != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(imageFile.FileName);
+                    string uploadPath = Path.Combine(wwwRootPath, @"Images\Products");
+                    using (FileStream fileStream = new FileStream(Path.Combine(uploadPath, fileName + extension), FileMode.Create))
+                    {
+                        imageFile.CopyTo(fileStream);
+                    }
+                    productVM.Product.ImageUrl = @"\Images\Products\" + fileName + extension;
+                }
+                _unitOfWork.Product.Add(productVM.Product);
+                _unitOfWork.Save();
+                TempData["Success"] = "Product Saved Successfully";
+                return RedirectToAction("Index");
+            }
+            return View(productVM);
+        }
 
-        //    Product product = _unitOfWork.Product.GetFirstOrDefault(a => a.Id == obj.Id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    else
-        //    {
-        //        _unitOfWork.Product.Update(obj);
-        //        _unitOfWork.Save();
-        //        TempData["Success"] = "Modified Product Successfully";
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+        #region API Calls
+        public IActionResult GetAll()
+        {
+            var productList = _unitOfWork.Product.GetAll();
+            return Json(new { data = productList});
+        }
+        #endregion
     }
 }

@@ -1,12 +1,12 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBook.DataAccess.Repository
 {
@@ -16,7 +16,7 @@ namespace BulkyBook.DataAccess.Repository
         internal DbSet<T> dbSet;
         public Repository(ApplicationDbContext db)
         {
-            _db = db;
+            _db = db;            
             this.dbSet = _db.Set<T>();
         }
         public void Add(T entity)
@@ -24,16 +24,30 @@ namespace BulkyBook.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> values = dbSet.Where(filter);
+            if (includeProperties != null)
+            {
+                foreach (string property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    values = values.Include(property);
+                }
+            }
             return values.FirstOrDefault();
         }
 
-        public IQueryable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
-            return query;
+            if (includeProperties != null)
+            {
+                foreach (string property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);                                        
+                }
+            }
+            return query.ToList();
         }
 
         public void Remove(T entity)

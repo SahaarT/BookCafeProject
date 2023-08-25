@@ -47,7 +47,7 @@
         </fieldset>
         <fieldset>
             <label class="form-label" asp-for="Product.ImageUrl" for="ImageUrl"></label>
-            <input id="ImageUrl" asp-for="Product.ImageUrl" name="imageFile" type="file" />
+            <input class="form-control" id="ImageUrl" asp-for="Product.ImageUrl" name="imageFile" type="file" />
         </fieldset>
         @*<fieldset>
         <label class="form-label" for="CoverTypeId" asp-for="CoverTypeId"></label>
@@ -104,6 +104,5 @@
             else
                 return true;
         }
-    </script>
-    <script src="~/js/Product.js"></script>
+    </script>    
 }

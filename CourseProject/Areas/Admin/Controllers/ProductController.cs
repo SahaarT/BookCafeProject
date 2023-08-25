@@ -68,15 +68,13 @@ namespace CourseProject.Areas.Admin.Controllers
 
             if (id == null || id == 0)
             {
-                //create Product
-                //ViewData["CoverTypes"] = CoverTypes;
-                //ViewBag.Categories = Categories;
-
+                //create product
                 return View(productVM);
             }
             else
             {
-                //update product                               
+                //update product
+                productVM.Product = _unitOfWork.Product.GetFirstOrDefault(a=>a.Id == id);
                 return View(productVM);
             }
         }
@@ -111,7 +109,7 @@ namespace CourseProject.Areas.Admin.Controllers
         #region API Calls
         public IActionResult GetAll()
         {
-            var productList = _unitOfWork.Product.GetAll();
+            var productList = _unitOfWork.Product.GetAll(includeProperties: "category,CoverType");
             return Json(new { data = productList});
         }
         #endregion

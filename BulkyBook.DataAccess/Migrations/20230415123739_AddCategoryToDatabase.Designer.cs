@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CourseProject.Migrations
+namespace BookCafe.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20230415123739_AddCategoryToDatabase")]

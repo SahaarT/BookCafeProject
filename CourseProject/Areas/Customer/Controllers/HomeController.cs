@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace CourseProject.Areas.Customer.Controllers
+namespace BookCafe.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class HomeController : Controller

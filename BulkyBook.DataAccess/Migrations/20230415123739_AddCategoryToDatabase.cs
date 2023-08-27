@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CourseProject.Migrations
+namespace BookCafe.Migrations
 {
     public partial class AddCategoryToDatabase : Migration
     {

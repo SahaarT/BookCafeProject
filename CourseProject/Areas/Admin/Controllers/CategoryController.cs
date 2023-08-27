@@ -5,7 +5,7 @@ using BulkyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourseProject.Areas.Admin.Controllers
+namespace BookCafe.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CategoryController : Controller

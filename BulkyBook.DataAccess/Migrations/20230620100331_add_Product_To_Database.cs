@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CourseProject.Migrations
+namespace BookCafe.Migrations
 {
     /// <inheritdoc />
     public partial class add_Product_To_Database : Migration

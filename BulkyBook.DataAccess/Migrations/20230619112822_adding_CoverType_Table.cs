@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CourseProject.Migrations
+namespace BookCafe.Migrations
 {
     public partial class adding_CoverType_Table : Migration
     {

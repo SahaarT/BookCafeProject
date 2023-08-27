@@ -5,7 +5,7 @@ using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CourseProject.Areas.Admin.Controllers
+namespace BookCafe.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductController : Controller

@@ -3,7 +3,7 @@ using BulkyBook.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace CourseProject.Areas.Admin.Controllers
+namespace BookCafe.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CoverTypeController : Controller
